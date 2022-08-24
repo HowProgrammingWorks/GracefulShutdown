@@ -15,14 +15,14 @@ const HTTP_REFRESH = {
   'Refresh': '5',
 };
 
-const timeout = msec => new Promise(resolve => {
+const timeout = (msec) => new Promise((resolve) => {
   setTimeout(resolve, msec);
 });
 
 const start = () => {
   console.log('Fork process');
   child = cluster.fork('./5-worker.js');
-  child.on('message', message => {
+  child.on('message', (message) => {
     if (message.status === 'restarted') {
       console.log('Restart worker');
       start();
@@ -53,7 +53,7 @@ const freeResources = async () => {
 
 const gracefulShutdown = async () => {
   process.send({ status: 'restarted' });
-  server.close(error => {
+  server.close((error) => {
     console.log('Detach from HTTP listener');
     if (error) {
       console.log(error);
@@ -81,7 +81,7 @@ if (cluster.isMaster) {
     }, LONG_RESPONSE);
   });
 
-  server.on('connection', connection => {
+  server.on('connection', (connection) => {
     console.log('New connection');
     connection.on('close', () => {
       console.log('Close');
@@ -94,7 +94,7 @@ if (cluster.isMaster) {
     console.log('Attach to HTTP listener');
   });
 
-  process.on('message', async message => {
+  process.on('message', async (message) => {
     if (message.status === 'restart') {
       console.log();
       console.log('Graceful shutdown');

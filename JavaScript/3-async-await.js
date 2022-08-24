@@ -7,7 +7,7 @@ const SERVER_PORT = 8000;
 const LONG_RESPONSE = 60000;
 const SHUTDOWN_TIMEOUT = 5000;
 
-const timeout = msec => new Promise(resolve => {
+const timeout = (msec) => new Promise((resolve) => {
   setTimeout(resolve, msec);
 });
 
@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
   }, LONG_RESPONSE);
 });
 
-server.on('connection', connection => {
+server.on('connection', (connection) => {
   console.log('New connection');
   connection.on('close', () => {
     console.log('Close');
@@ -50,7 +50,7 @@ const freeResources = async () => {
 };
 
 const gracefulShutdown = async () => {
-  server.close(error => {
+  server.close((error) => {
     if (error) {
       console.log(error);
       process.exit(1);

@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
   }, LONG_RESPONSE);
 });
 
-server.on('connection', connection => {
+server.on('connection', (connection) => {
   console.log('New connection');
   connection.on('close', () => {
     console.log('Close');
@@ -41,13 +41,13 @@ const closeConnections = () => {
   }
 };
 
-const freeResources = callback => {
+const freeResources = (callback) => {
   console.log('Free resources');
   callback();
 };
 
-const gracefulShutdown = callback => {
-  server.close(error => {
+const gracefulShutdown = (callback) => {
+  server.close((error) => {
     if (error) {
       console.log(error);
       process.exit(1);
