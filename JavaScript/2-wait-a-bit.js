@@ -1,6 +1,6 @@
 'use strict';
 
-const http = require('http');
+const http = require('node:http');
 const connections = new Map();
 
 const SERVER_PORT = 8000;

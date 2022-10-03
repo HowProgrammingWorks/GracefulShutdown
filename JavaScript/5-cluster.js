@@ -1,7 +1,7 @@
 'use strict';
 
-const cluster = require('cluster');
-const http = require('http');
+const cluster = require('node:cluster');
+const http = require('node:http');
 
 const connections = new Map();
 let server = null;
