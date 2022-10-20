@@ -21,7 +21,7 @@ const timeout = (msec) => new Promise((resolve) => {
 
 const start = () => {
   console.log('Fork process');
-  child = cluster.fork('./5-worker.js');
+  child = cluster.fork('./5-cluster.js');
   child.on('message', (message) => {
     if (message.status === 'restarted') {
       console.log('Restart worker');
