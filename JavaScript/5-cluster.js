@@ -66,7 +66,7 @@ const gracefulShutdown = async () => {
   await closeConnections();
 };
 
-if (cluster.isMaster) {
+if (cluster.isPrimary) {
   start();
 
   process.on('SIGINT', async () => {
