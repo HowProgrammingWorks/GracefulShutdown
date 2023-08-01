@@ -1,22 +1,19 @@
 'use strict';
 
 const http = require('node:http');
+const timers = require('node:timers/promises');
+
 const connections = new Map();
 
 const SERVER_PORT = 8000;
 const LONG_RESPONSE = 60000;
 const SHUTDOWN_TIMEOUT = 5000;
 
-const timeout = (msec) => new Promise((resolve) => {
-  setTimeout(resolve, msec);
-});
-
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   console.log('New request');
   connections.set(res.connection, res);
-  setTimeout(() => {
-    res.end('Example output');
-  }, LONG_RESPONSE);
+  await timers.setTimeout(LONG_RESPONSE);
+  res.end('Example output');
 });
 
 server.on('connection', (connection) => {
@@ -56,7 +53,7 @@ const gracefulShutdown = async () => {
       process.exit(1);
     }
   });
-  await timeout(SHUTDOWN_TIMEOUT);
+  await timers.setTimeout(SHUTDOWN_TIMEOUT);
   await freeResources();
   await closeConnections();
 };

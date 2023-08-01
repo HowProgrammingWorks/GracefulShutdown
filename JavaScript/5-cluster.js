@@ -1,6 +1,7 @@
 'use strict';
 
 const cluster = require('node:cluster');
+const timers = require('node:timers/promises');
 const http = require('node:http');
 
 const connections = new Map();
@@ -14,10 +15,6 @@ const HTTP_REFRESH = {
   'Content-Type': 'text/html',
   'Refresh': '5',
 };
-
-const timeout = (msec) => new Promise((resolve) => {
-  setTimeout(resolve, msec);
-});
 
 const start = () => {
   console.log('Fork process');
@@ -61,7 +58,7 @@ const gracefulShutdown = async () => {
     }
     process.exit(0);
   });
-  await timeout(SHUTDOWN_TIMEOUT);
+  await timers.setTimeout(SHUTDOWN_TIMEOUT);
   await freeResources();
   await closeConnections();
 };
@@ -73,12 +70,11 @@ if (cluster.isPrimary) {
     child.send({ status: 'restart' });
   });
 } else {
-  server = http.createServer((req, res) => {
+  server = http.createServer(async (req, res) => {
     console.log('New request');
     connections.set(res.connection, res);
-    setTimeout(() => {
-      res.end('Example output');
-    }, LONG_RESPONSE);
+    await timers.setTimeout(LONG_RESPONSE);
+    res.end('Example output');
   });
 
   server.on('connection', (connection) => {
