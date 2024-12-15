@@ -13,7 +13,7 @@ const LONG_RESPONSE = 60000;
 const SHUTDOWN_TIMEOUT = 5000;
 const HTTP_REFRESH = {
   'Content-Type': 'text/html',
-  'Refresh': '5',
+  Refresh: '5',
 };
 
 const start = () => {
