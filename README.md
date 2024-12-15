@@ -1,2 +1,1 @@
-# GracefulShutdown
-Graceful shutdown for network servers
+# Graceful shutdown for network servers
